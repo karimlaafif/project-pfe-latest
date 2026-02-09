@@ -1,0 +1,28 @@
+# Python dependencies for Data Warehouse & ML Pipeline
+
+# Core Data Processing
+pandas==2.2.0
+numpy==1.26.3
+scipy==1.12.0
+
+# Database Connectors
+clickhouse-driver==0.2.6
+psycopg2-binary==2.9.9
+
+# Machine Learning & Dimension Reduction
+scikit-learn==1.4.0
+tensorflow==2.15.0  # For LSTM models
+torch==2.1.2        # Alternative: PyTorch
+
+# Data Quality & Validation
+great-expectations==0.18.8
+
+# Environment & Config
+python-dotenv==1.0.0
+
+# Logging & Monitoring
+structlog==24.1.0
+
+# Testing
+pytest==7.4.4
+pytest-cov==4.1.0

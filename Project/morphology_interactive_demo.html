@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Morphologie Mathématique Interactive</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e2761 0%, #0a0e2e 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #cadcfc, #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: #cadcfc;
+            font-size: 1.2em;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .controls {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 25px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            height: fit-content;
+        }
+
+        .control-section {
+            margin-bottom: 25px;
+        }
+
+        .control-section h3 {
+            color: #cadcfc;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            border-bottom: 2px solid #ff6b35;
+            padding-bottom: 8px;
+        }
+
+        .button-group {
+            display: grid;
+            gap: 10px;
+        }
+
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #1e2761, #2a3580);
+            color: white;
+            font-size: 0.95em;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #2a3580, #3a45a0);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(202, 220, 252, 0.3);
+        }
+
+        button.active {
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+        }
+
+        .slider-container {
+            margin: 15px 0;
+        }
+
+        .slider-container label {
+            display: block;
+            margin-bottom: 8px;
+            color: #cadcfc;
+            font-size: 0.9em;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.2);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #ff6b35;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #ff6b35;
+            cursor: pointer;
+            border: none;
+        }
+
+        .canvas-area {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .canvas-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+
+        .canvas-wrapper {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .canvas-wrapper h4 {
+            color: #1e2761;
+            margin-bottom: 10px;
+            font-size: 1em;
+            text-align: center;
+        }
+
+        canvas {
+            display: block;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            cursor: crosshair;
+            background: white;
+            width: 100%;
+            height: auto;
+        }
+
+        .info-panel {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .info-panel h3 {
+            color: #ff6b35;
+            margin-bottom: 10px;
+        }
+
+        .info-content {
+            color: #cadcfc;
+            line-height: 1.6;
+            font-size: 0.95em;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #ff6b35;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.85em;
+            color: #cadcfc;
+        }
+
+        .drawing-mode {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .drawing-mode button {
+            flex: 1;
+        }
+
+        .se-preview {
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .se-grid {
+            display: inline-grid;
+            gap: 2px;
+            margin: 10px auto;
+        }
+
+        .se-cell {
+            width: 20px;
+            height: 20px;
+            border: 1px solid #ccc;
+            display: inline-block;
+        }
+
+        .se-cell.active {
+            background: #1e2761;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .processing {
+            animation: pulse 1.5s infinite;
+        }
+
+        .help-tooltip {
+            position: relative;
+            display: inline-block;
+            margin-left: 5px;
+            color: #ff6b35;
+            cursor: help;
+        }
+
+        .tooltip-text {
+            visibility: hidden;
+            width: 200px;
+            background-color: #1e2761;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 10px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            font-size: 0.85em;
+            line-height: 1.4;
+        }
+
+        .help-tooltip:hover .tooltip-text {
+            visibility: visible;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            background: rgba(255, 255, 255, 0.9);
+            color: #1e2761;
+            font-size: 0.95em;
+            cursor: pointer;
+        }
+
+        .operation-formula {
+            background: rgba(255, 107, 53, 0.1);
+            border-left: 3px solid #ff6b35;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            color: #cadcfc;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔬 Morphologie Mathématique Interactive</h1>
+            <p class="subtitle">Explorez l'Érosion, la Dilatation, l'Ouverture et la Fermeture en temps réel</p>
+        </header>
+
+        <div class="main-content">
+            <div class="controls">
+                <div class="control-section">
+                    <h3>🎨 Mode Dessin</h3>
+                    <div class="drawing-mode">
+                        <button onclick="setDrawMode('draw')" id="drawBtn" class="active">Dessiner</button>
+                        <button onclick="setDrawMode('erase')" id="eraseBtn">Effacer</button>
+                    </div>
+                    <button onclick="clearCanvas()" style="width: 100%;">🗑️ Effacer Tout</button>
+                    <button onclick="loadPreset('text')" style="width: 100%; margin-top: 10px;">📝 Charger Texte</button>
+                    <button onclick="loadPreset('shape')" style="width: 100%; margin-top: 5px;">⬛ Charger Forme</button>
+                </div>
+
+                <div class="control-section">
+                    <h3>⚙️ Opération Morphologique</h3>
+                    <div class="button-group">
+                        <button onclick="setOperation('erosion')" id="erosionBtn">⊖ Érosion</button>
+                        <button onclick="setOperation('dilation')" id="dilationBtn">⊕ Dilatation</button>
+                        <button onclick="setOperation('opening')" id="openingBtn">○ Ouverture</button>
+                        <button onclick="setOperation('closing')" id="closingBtn">• Fermeture</button>
+                        <button onclick="setOperation('gradient')" id="gradientBtn">∇ Gradient</button>
+                        <button onclick="setOperation('tophat')" id="tophatBtn">⌃ Top-Hat</button>
+                    </div>
+                </div>
+
+                <div class="control-section">
+                    <h3>🔧 Élément Structurant</h3>
+                    <select id="seType" onchange="updateSE()">
+                        <option value="square">Carré</option>
+                        <option value="cross">Croix</option>
+                        <option value="circle">Cercle</option>
+                        <option value="horizontal">Ligne H</option>
+                        <option value="vertical">Ligne V</option>
+                        <option value="diagonal1">Diagonale /</option>
+                        <option value="diagonal2">Diagonale \</option>
+                    </select>
+                    
+                    <div class="slider-container">
+                        <label>Taille SE: <span id="seSize">3</span>x<span id="seSize2">3</span></label>
+                        <input type="range" id="seSizeSlider" min="3" max="11" step="2" value="3" onchange="updateSE()">
+                    </div>
+
+                    <div class="se-preview" id="sePreview">
+                        <div style="text-align: center; color: #1e2761; font-weight: bold; margin-bottom: 5px;">Aperçu SE</div>
+                        <div id="seGrid" style="display: flex; justify-content: center;"></div>
+                    </div>
+                </div>
+
+                <div class="control-section">
+                    <h3>🎯 Paramètres</h3>
+                    <div class="slider-container">
+                        <label>Itérations: <span id="iterValue">1</span>
+                            <span class="help-tooltip">ℹ️
+                                <span class="tooltip-text">Nombre de fois que l'opération est appliquée</span>
+                            </span>
+                        </label>
+                        <input type="range" id="iterations" min="1" max="5" value="1" oninput="updateIterations(this.value)">
+                    </div>
+
+                    <div class="slider-container">
+                        <label>Taille Pinceau: <span id="brushValue">3</span>px</label>
+                        <input type="range" id="brushSize" min="1" max="20" value="3" oninput="updateBrushSize(this.value)">
+                    </div>
+                </div>
+
+                <div class="control-section">
+                    <button onclick="applyOperation()" style="width: 100%; background: linear-gradient(135deg, #ff6b35, #f7931e); font-size: 1.1em; padding: 15px;">
+                        ▶️ Appliquer l'Opération
+                    </button>
+                </div>
+            </div>
+
+            <div class="canvas-area">
+                <div class="canvas-grid">
+                    <div class="canvas-wrapper">
+                        <h4>📊 Image Originale (Dessinez ici)</h4>
+                        <canvas id="inputCanvas" width="400" height="400"></canvas>
+                    </div>
+                    <div class="canvas-wrapper">
+                        <h4>✨ Résultat de l'Opération</h4>
+                        <canvas id="outputCanvas" width="400" height="400"></canvas>
+                    </div>
+                    <div class="canvas-wrapper">
+                        <h4>🔍 Érosion (Intermédiaire)</h4>
+                        <canvas id="erosionCanvas" width="400" height="400"></canvas>
+                    </div>
+                    <div class="canvas-wrapper">
+                        <h4>🔍 Dilatation (Intermédiaire)</h4>
+                        <canvas id="dilationCanvas" width="400" height="400"></canvas>
+                    </div>
+                </div>
+
+                <div class="stats">
+                    <div class="stat-card">
+                        <div class="stat-value" id="pixelCount">0</div>
+                        <div class="stat-label">Pixels Objets</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="percentFilled">0%</div>
+                        <div class="stat-label">Remplissage</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="changePercent">0%</div>
+                        <div class="stat-label">Changement</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="processTime">0ms</div>
+                        <div class="stat-label">Temps</div>
+                    </div>
+                </div>
+
+                <div class="info-panel">
+                    <h3 id="operationTitle">ℹ️ Informations sur l'Opération</h3>
+                    <div class="operation-formula" id="operationFormula">
+                        Sélectionnez une opération pour voir sa formule mathématique
+                    </div>
+                    <div class="info-content" id="operationInfo">
+                        Dessinez sur le canvas de gauche, choisissez une opération morphologique et cliquez sur "Appliquer l'Opération" pour voir le résultat en temps réel.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Canvas setup
+        const inputCanvas = document.getElementById('inputCanvas');
+        const outputCanvas = document.getElementById('outputCanvas');
+        const erosionCanvas = document.getElementById('erosionCanvas');
+        const dilationCanvas = document.getElementById('dilationCanvas');
+        
+        const inputCtx = inputCanvas.getContext('2d');
+        const outputCtx = outputCanvas.getContext('2d');
+        const erosionCtx = erosionCanvas.getContext('2d');
+        const dilationCtx = dilationCanvas.getContext('2d');
+
+        // State
+        let isDrawing = false;
+        let drawMode = 'draw';
+        let currentOperation = 'erosion';
+        let brushSize = 3;
+        let iterations = 1;
+        let structuringElement = createSquareSE(3);
+
+        // Initialize canvases
+        function initCanvas() {
+            [inputCtx, outputCtx, erosionCtx, dilationCtx].forEach(ctx => {
+                ctx.fillStyle = 'white';
+                ctx.fillRect(0, 0, 400, 400);
+            });
+        }
+        initCanvas();
+
+        // Drawing functionality
+        inputCanvas.addEventListener('mousedown', startDrawing);
+        inputCanvas.addEventListener('mousemove', draw);
+        inputCanvas.addEventListener('mouseup', stopDrawing);
+        inputCanvas.addEventListener('mouseleave', stopDrawing);
+
+        function startDrawing(e) {
+            isDrawing = true;
+            draw(e);
+        }
+
+        function stopDrawing() {
+            isDrawing = false;
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+            
+            const rect = inputCanvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            inputCtx.fillStyle = drawMode === 'draw' ? 'black' : 'white';
+            inputCtx.beginPath();
+            inputCtx.arc(x, y, brushSize, 0, Math.PI * 2);
+            inputCtx.fill();
+        }
+
+        function setDrawMode(mode) {
+            drawMode = mode;
+            document.getElementById('drawBtn').classList.toggle('active', mode === 'draw');
+            document.getElementById('eraseBtn').classList.toggle('active', mode === 'erase');
+        }
+
+        function setOperation(op) {
+            currentOperation = op;
+            ['erosion', 'dilation', 'opening', 'closing', 'gradient', 'tophat'].forEach(o => {
+                document.getElementById(o + 'Btn').classList.toggle('active', o === op);
+            });
+            updateOperationInfo(op);
+        }
+
+        function updateOperationInfo(op) {
+            const info = {
+                erosion: {
+                    title: '⊖ Érosion',
+                    formula: 'A ⊖ B = {z | B_z ⊆ A}',
+                    description: 'L\'érosion réduit la taille des objets en supprimant les pixels de contour. Elle élimine les petites structures et sépare les objets connectés finement. Utile pour enlever le bruit et isoler des composantes.'
+                },
+                dilation: {
+                    title: '⊕ Dilatation',
+                    formula: 'A ⊕ B = {z | B̂_z ∩ A ≠ ∅}',
+                    description: 'La dilatation agrandit les objets en ajoutant des pixels autour des contours. Elle comble les petits trous et connecte les objets proches. Inverse de l\'érosion.'
+                },
+                opening: {
+                    title: '○ Ouverture (Érosion puis Dilatation)',
+                    formula: 'A ○ B = (A ⊖ B) ⊕ B',
+                    description: 'L\'ouverture élimine les petits objets et les protubérances tout en préservant la forme des grands objets. Idéale pour le filtrage du bruit "poivre" et le lissage des contours externes.'
+                },
+                closing: {
+                    title: '• Fermeture (Dilatation puis Érosion)',
+                    formula: 'A • B = (A ⊕ B) ⊖ B',
+                    description: 'La fermeture comble les petits trous et les cavités tout en préservant la forme globale. Parfaite pour connecter les objets proches et lisser les contours internes. Filtre le bruit "sel".'
+                },
+                gradient: {
+                    title: '∇ Gradient Morphologique',
+                    formula: '∇(A) = (A ⊕ B) - (A ⊖ B)',
+                    description: 'Le gradient morphologique détecte les contours en calculant la différence entre dilatation et érosion. Plus robuste que les gradients classiques pour les formes irrégulières.'
+                },
+                tophat: {
+                    title: '⌃ Top-Hat (White)',
+                    formula: 'TopHat(A) = A - (A ○ B)',
+                    description: 'Le Top-Hat extrait les petites structures claires (objets plus petits que l\'élément structurant). Utile pour détecter de petits détails ou enlever un fond non uniforme.'
+                }
+            };
+
+            const opInfo = info[op];
+            document.getElementById('operationTitle').textContent = opInfo.title;
+            document.getElementById('operationFormula').textContent = opInfo.formula;
+            document.getElementById('operationInfo').textContent = opInfo.description;
+        }
+
+        // Structuring Element functions
+        function createSquareSE(size) {
+            const se = [];
+            for (let i = 0; i < size; i++) {
+                se[i] = [];
+                for (let j = 0; j < size; j++) {
+                    se[i][j] = 1;
+                }
+            }
+            return se;
+        }
+
+        function createCrossSE(size) {
+            const se = [];
+            const center = Math.floor(size / 2);
+            for (let i = 0; i < size; i++) {
+                se[i] = [];
+                for (let j = 0; j < size; j++) {
+                    se[i][j] = (i === center || j === center) ? 1 : 0;
+                }
+            }
+            return se;
+        }
+
+        function createCircleSE(size) {
+            const se = [];
+            const center = Math.floor(size / 2);
+            const radius = center;
+            for (let i = 0; i < size; i++) {
+                se[i] = [];
+                for (let j = 0; j < size; j++) {
+                    const distance = Math.sqrt((i - center) ** 2 + (j - center) ** 2);
+                    se[i][j] = distance <= radius ? 1 : 0;
+                }
+            }
+            return se;
+        }
+
+        function createLineSE(size, type) {
+            const se = [];
+            const center = Math.floor(size / 2);
+            
+            for (let i = 0; i < size; i++) {
+                se[i] = [];
+                for (let j = 0; j < size; j++) {
+                    if (type === 'horizontal') {
+                        se[i][j] = (i === center) ? 1 : 0;
+                    } else if (type === 'vertical') {
+                        se[i][j] = (j === center) ? 1 : 0;
+                    } else if (type === 'diagonal1') {
+                        se[i][j] = (i === j) ? 1 : 0;
+                    } else if (type === 'diagonal2') {
+                        se[i][j] = (i + j === size - 1) ? 1 : 0;
+                    }
+                }
+            }
+            return se;
+        }
+
+        function updateSE() {
+            const type = document.getElementById('seType').value;
+            const size = parseInt(document.getElementById('seSizeSlider').value);
+            
+            document.getElementById('seSize').textContent = size;
+            document.getElementById('seSize2').textContent = size;
+            
+            switch(type) {
+                case 'square':
+                    structuringElement = createSquareSE(size);
+                    break;
+                case 'cross':
+                    structuringElement = createCrossSE(size);
+                    break;
+                case 'circle':
+                    structuringElement = createCircleSE(size);
+                    break;
+                case 'horizontal':
+                    structuringElement = createLineSE(size, 'horizontal');
+                    break;
+                case 'vertical':
+                    structuringElement = createLineSE(size, 'vertical');
+                    break;
+                case 'diagonal1':
+                    structuringElement = createLineSE(size, 'diagonal1');
+                    break;
+                case 'diagonal2':
+                    structuringElement = createLineSE(size, 'diagonal2');
+                    break;
+            }
+            
+            displaySE();
+        }
+
+        function displaySE() {
+            const grid = document.getElementById('seGrid');
+            const size = structuringElement.length;
+            
+            grid.innerHTML = '';
+            grid.style.gridTemplateColumns = `repeat(${size}, 20px)`;
+            
+            const container = document.createElement('div');
+            container.className = 'se-grid';
+            container.style.gridTemplateColumns = `repeat(${size}, 20px)`;
+            
+            for (let i = 0; i < size; i++) {
+                for (let j = 0; j < size; j++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'se-cell';
+                    if (structuringElement[i][j] === 1) {
+                        cell.classList.add('active');
+                    }
+                    container.appendChild(cell);
+                }
+            }
+            
+            grid.appendChild(container);
+        }
+
+        // Morphological operations
+        function getImageData(ctx) {
+            return ctx.getImageData(0, 0, 400, 400);
+        }
+
+        function putImageData(ctx, imageData) {
+            ctx.putImageData(imageData, 0, 0);
+        }
+
+        function isForeground(imageData, x, y) {
+            if (x < 0 || x >= 400 || y < 0 || y >= 400) return false;
+            const index = (y * 400 + x) * 4;
+            return imageData.data[index] < 128; // Black pixels
+        }
+
+        function setPixel(imageData, x, y, value) {
+            if (x < 0 || x >= 400 || y < 0 || y >= 400) return;
+            const index = (y * 400 + x) * 4;
+            const color = value ? 0 : 255;
+            imageData.data[index] = color;
+            imageData.data[index + 1] = color;
+            imageData.data[index + 2] = color;
+            imageData.data[index + 3] = 255;
+        }
+
+        function erode(imageData, se) {
+            const result = new ImageData(400, 400);
+            const offset = Math.floor(se.length / 2);
+            
+            // Initialize to white
+            for (let i = 0; i < result.data.length; i += 4) {
+                result.data[i] = 255;
+                result.data[i + 1] = 255;
+                result.data[i + 2] = 255;
+                result.data[i + 3] = 255;
+            }
+            
+            for (let y = 0; y < 400; y++) {
+                for (let x = 0; x < 400; x++) {
+                    let allMatch = true;
+                    
+                    for (let i = 0; i < se.length && allMatch; i++) {
+                        for (let j = 0; j < se[i].length && allMatch; j++) {
+                            if (se[i][j] === 1) {
+                                const ny = y + i - offset;
+                                const nx = x + j - offset;
+                                if (!isForeground(imageData, nx, ny)) {
+                                    allMatch = false;
+                                }
+                            }
+                        }
+                    }
+                    
+                    if (allMatch) {
+                        setPixel(result, x, y, true);
+                    }
+                }
+            }
+            
+            return result;
+        }
+
+        function dilate(imageData, se) {
+            const result = new ImageData(400, 400);
+            const offset = Math.floor(se.length / 2);
+            
+            // Initialize to white
+            for (let i = 0; i < result.data.length; i += 4) {
+                result.data[i] = 255;
+                result.data[i + 1] = 255;
+                result.data[i + 2] = 255;
+                result.data[i + 3] = 255;
+            }
+            
+            for (let y = 0; y < 400; y++) {
+                for (let x = 0; x < 400; x++) {
+                    if (isForeground(imageData, x, y)) {
+                        for (let i = 0; i < se.length; i++) {
+                            for (let j = 0; j < se[i].length; j++) {
+                                if (se[i][j] === 1) {
+                                    const ny = y + i - offset;
+                                    const nx = x + j - offset;
+                                    setPixel(result, nx, ny, true);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+            return result;
+        }
+
+        function opening(imageData, se, iter) {
+            let result = imageData;
+            for (let i = 0; i < iter; i++) {
+                result = erode(result, se);
+            }
+            erosionCtx.putImageData(result, 0, 0);
+            
+            for (let i = 0; i < iter; i++) {
+                result = dilate(result, se);
+            }
+            return result;
+        }
+
+        function closing(imageData, se, iter) {
+            let result = imageData;
+            for (let i = 0; i < iter; i++) {
+                result = dilate(result, se);
+            }
+            dilationCtx.putImageData(result, 0, 0);
+            
+            for (let i = 0; i < iter; i++) {
+                result = erode(result, se);
+            }
+            return result;
+        }
+
+        function gradient(imageData, se) {
+            const dilated = dilate(imageData, se);
+            const eroded = erode(imageData, se);
+            
+            erosionCtx.putImageData(eroded, 0, 0);
+            dilationCtx.putImageData(dilated, 0, 0);
+            
+            const result = new ImageData(400, 400);
+            for (let i = 0; i < dilated.data.length; i += 4) {
+                const isDilated = dilated.data[i] < 128;
+                const isEroded = eroded.data[i] < 128;
+                const isGradient = isDilated && !isEroded;
+                
+                const color = isGradient ? 0 : 255;
+                result.data[i] = color;
+                result.data[i + 1] = color;
+                result.data[i + 2] = color;
+                result.data[i + 3] = 255;
+            }
+            
+            return result;
+        }
+
+        function tophat(imageData, se) {
+            const opened = opening(imageData, se, 1);
+            
+            const result = new ImageData(400, 400);
+            for (let i = 0; i < imageData.data.length; i += 4) {
+                const isOriginal = imageData.data[i] < 128;
+                const isOpened = opened.data[i] < 128;
+                const isTophat = isOriginal && !isOpened;
+                
+                const color = isTophat ? 0 : 255;
+                result.data[i] = color;
+                result.data[i + 1] = color;
+                result.data[i + 2] = color;
+                result.data[i + 3] = 255;
+            }
+            
+            return result;
+        }
+
+        function applyOperation() {
+            const startTime = performance.now();
+            
+            const inputData = getImageData(inputCtx);
+            let resultData;
+            
+            switch(currentOperation) {
+                case 'erosion':
+                    resultData = inputData;
+                    for (let i = 0; i < iterations; i++) {
+                        resultData = erode(resultData, structuringElement);
+                    }
+                    erosionCtx.putImageData(resultData, 0, 0);
+                    dilationCtx.fillStyle = 'white';
+                    dilationCtx.fillRect(0, 0, 400, 400);
+                    break;
+                    
+                case 'dilation':
+                    resultData = inputData;
+                    for (let i = 0; i < iterations; i++) {
+                        resultData = dilate(resultData, structuringElement);
+                    }
+                    dilationCtx.putImageData(resultData, 0, 0);
+                    erosionCtx.fillStyle = 'white';
+                    erosionCtx.fillRect(0, 0, 400, 400);
+                    break;
+                    
+                case 'opening':
+                    resultData = opening(inputData, structuringElement, iterations);
+                    break;
+                    
+                case 'closing':
+                    resultData = closing(inputData, structuringElement, iterations);
+                    break;
+                    
+                case 'gradient':
+                    resultData = gradient(inputData, structuringElement);
+                    break;
+                    
+                case 'tophat':
+                    resultData = tophat(inputData, structuringElement);
+                    break;
+            }
+            
+            putImageData(outputCtx, resultData);
+            
+            const endTime = performance.now();
+            updateStats(inputData, resultData, endTime - startTime);
+        }
+
+        function updateStats(inputData, outputData, time) {
+            let inputPixels = 0, outputPixels = 0;
+            
+            for (let i = 0; i < inputData.data.length; i += 4) {
+                if (inputData.data[i] < 128) inputPixels++;
+                if (outputData.data[i] < 128) outputPixels++;
+            }
+            
+            const totalPixels = 400 * 400;
+            const changePercent = inputPixels > 0 ? 
+                Math.abs(((outputPixels - inputPixels) / inputPixels) * 100).toFixed(1) : 0;
+            
+            document.getElementById('pixelCount').textContent = outputPixels.toLocaleString();
+            document.getElementById('percentFilled').textContent = 
+                ((outputPixels / totalPixels) * 100).toFixed(2) + '%';
+            document.getElementById('changePercent').textContent = changePercent + '%';
+            document.getElementById('processTime').textContent = time.toFixed(1) + 'ms';
+        }
+
+        function clearCanvas() {
+            initCanvas();
+        }
+
+        function loadPreset(type) {
+            clearCanvas();
+            
+            if (type === 'text') {
+                inputCtx.fillStyle = 'black';
+                inputCtx.font = 'bold 60px Arial';
+                inputCtx.fillText('MORPH', 50, 150);
+                inputCtx.font = 'bold 40px Arial';
+                inputCtx.fillText('Image', 120, 250);
+            } else if (type === 'shape') {
+                inputCtx.fillStyle = 'black';
+                // Rectangle with hole
+                inputCtx.fillRect(50, 50, 300, 300);
+                inputCtx.fillStyle = 'white';
+                inputCtx.fillRect(150, 150, 100, 100);
+                
+                // Small shapes
+                inputCtx.fillStyle = 'black';
+                inputCtx.beginPath();
+                inputCtx.arc(100, 100, 15, 0, Math.PI * 2);
+                inputCtx.fill();
+                
+                inputCtx.beginPath();
+                inputCtx.arc(300, 300, 20, 0, Math.PI * 2);
+                inputCtx.fill();
+            }
+        }
+
+        function updateIterations(value) {
+            iterations = parseInt(value);
+            document.getElementById('iterValue').textContent = value;
+        }
+
+        function updateBrushSize(value) {
+            brushSize = parseInt(value);
+            document.getElementById('brushValue').textContent = value;
+        }
+
+        // Initialize
+        updateSE();
+        updateOperationInfo('erosion');
+        
+        console.log('🔬 Application de Morphologie Mathématique chargée avec succès!');
+    </script>
+</body>
+</html>
