@@ -12,7 +12,7 @@ A comprehensive AI-powered platform for loan default prediction, fraud detection
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-336791?style=for-the-badge&logo=postgresql)](https://www.postgresql.org/)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 
-[🚀 Live Demo]((https://drive.google.com/file/d/1vY34zuu-Ep2CefC7bLwwLehWubuA1Z0O/view?usp=sharing)) • [📖 Documentation](https://docs.lendguard.ai) • [🎥 Video Tour]((https://drive.google.com/file/d/1vY34zuu-Ep2CefC7bLwwLehWubuA1Z0O/view?usp=sharing)) • [💬 Community](https://discord.gg/techevolab)
+[🚀 Live Demo](https://drive.google.com/file/d/1vY34zuu-Ep2CefC7bLwwLehWubuA1Z0O/view?usp=sharing) • [📖 Documentation](https://docs.lendguard.ai) • [🎥 Video Tour](https://drive.google.com/file/d/1vY34zuu-Ep2CefC7bLwwLehWubuA1Z0O/view?usp=sharing) • [💬 Community](https://discord.gg/techevolab)
 
 ![LendGuard AI Dashboard](https://via.placeholder.com/1200x600/0EA5E9/ffffff?text=LendGuard+AI+Dashboard)
 
