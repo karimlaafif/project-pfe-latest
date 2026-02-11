@@ -1,0 +1,832 @@
+\documentclass[a4paper,12pt,oneside]{report}
+
+% ============================================================
+% PACKAGES
+% ============================================================
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{lmodern}
+\usepackage{geometry}
+\geometry{top=2.5cm, bottom=2.5cm, left=3cm, right=2.5cm}
+\usepackage{setspace}
+\onehalfspacing
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{algorithm}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{tocloft}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{enumitem}
+\usepackage{pdfpages}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning,fit,calc}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+% ============================================================
+% CONFIGURATION
+% ============================================================
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!70!black,
+  citecolor=green!50!black,
+  urlcolor=blue!60!black
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue}\bfseries,
+  commentstyle=\color{green!60!black}\itshape,
+  stringstyle=\color{red!70!black},
+  frame=single,
+  breaklines=true,
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  backgroundcolor=\color{gray!5},
+  tabsize=2,
+  showstringspaces=false
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\leftmark}
+\fancyhead[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\titleformat{\chapter}[display]
+  {\normalfont\huge\bfseries}{\chaptertitlename\ \thechapter}{20pt}{\Huge}
+\titlespacing*{\chapter}{0pt}{-20pt}{40pt}
+
+% ============================================================
+% PAGE DE GARDE
+% ============================================================
+\begin{document}
+
+\begin{titlepage}
+\begin{center}
+
+\vspace*{1cm}
+{\large Minist\`ere de l'Enseignement Sup\'erieur et de la Recherche Scientifique}\\[1cm]
+
+{\Large \textbf{Universit\'e Ibn Zohr}}\\[0.3cm]
+{\large Ecole Superieure de Technologies Agadir}\\[0.2cm]
+{\large D\'epartement d'Informatique}\\[2cm]
+
+\rule{\textwidth}{1.5pt}\\[0.5cm]
+{\Huge \textbf{LendGuard }}\\[0.3cm]
+{\LARGE \textbf{Plateforme Intelligente d'\'Evaluation}}\\[0.2cm]
+{\LARGE \textbf{du Risque de Cr\'edit par}}\\[0.2cm]
+{\LARGE \textbf{Intelligence Artificielle}}\\[0.5cm]
+\rule{\textwidth}{1.5pt}\\[1.5cm]
+
+{\large \textbf{M\'emoire de Fin d'\'Etudes}}\\[0.2cm]
+{\large En vue de l'obtention du dipl\^ome de DUT }\\[0.2cm]
+{\large Sp\'ecialit\'e~: Ingenieurie de Donn\'ees}\\[2cm]
+
+\begin{minipage}{0.45\textwidth}
+\begin{flushleft}
+{\large \textbf{Pr\'esent\'e par~:}}\\[0.3cm]
+{\large Karim Laafif\\
+Marouane Nicherhane }
+\end{flushleft}
+\end{minipage}
+\hfill
+\begin{minipage}{0.45\textwidth}
+\begin{flushright}
+{\large \textbf{Encadr\'e par~:}}\\[0.3cm]
+{\large Pr. A. SABOUR }
+\end{flushright}
+\end{minipage}
+
+\vfill
+{\large Ann\'ee Universitaire 2025 -- 2026}
+
+\end{center}
+\end{titlepage}
+
+% ============================================================
+% PAGES LIMINAIRES
+% ============================================================
+\pagenumbering{roman}
+
+% Remerciements
+\chapter*{Remerciements}
+\addcontentsline{toc}{chapter}{Remerciements}
+
+Je tiens tout d'abord \`a remercier \textbf{Dieu le Tout-Puissant} de m'avoir donn\'e la force, la patience et la volont\'e pour accomplir ce travail.
+
+Mes sinc\`eres remerciements vont \`a mon encadrant, \textbf{Pr. A. SABOUR}, pour ses orientations pr\'ecieuses, sa disponibilit\'e et ses conseils judicieux tout au long de la r\'ealisation de ce projet.
+
+Je remercie \'egalement les membres du jury pour avoir accept\'e d'\'evaluer ce travail.
+
+Enfin, je d\'edie ce m\'emoire \`a ma famille et \`a tous ceux qui m'ont soutenu durant mon parcours acad\'emique.
+
+% D\'edicaces
+\chapter*{D\'edicaces}
+\addcontentsline{toc}{chapter}{D\'edicaces}
+
+\textit{\`A mes chers parents, pour leur amour inconditionnel et leur soutien sans faille\ldots}
+
+\textit{\`A mes fr\`eres et s\oe urs\ldots}
+
+\textit{\`A tous mes amis et coll\`egues\ldots}
+
+% R\'esum\'e
+\chapter*{R\'esum\'e}
+\addcontentsline{toc}{chapter}{R\'esum\'e}
+
+Ce m\'emoire pr\'esente la conception et la r\'ealisation de \textbf{LendGuard AI}, une plateforme intelligente d'\'evaluation du risque de cr\'edit bas\'ee sur l'intelligence artificielle. Le syst\`eme int\`egre des mod\`eles d'apprentissage automatique avanc\'es -- incluant la r\'egression logistique, les for\^ets al\'eatoires, le Gradient Boosting et XGBoost -- pour la pr\'ediction du d\'efaut de paiement, coupl\'es \`a un module de d\'etection de fraude et \`a un cadre complet de Gouvernance, Risque et Conformit\'e (GRC).
+
+L'architecture technique repose sur une pile technologique moderne comprenant Next.js~14, React~18, TypeScript et Tailwind~CSS pour le frontend, PostgreSQL avec Prisma~ORM pour la couche transactionnelle, et ClickHouse pour l'entrep\^ot de donn\'ees analytique suivant l'architecture m\'edaillon (Bronze/Silver/Gold). Le pipeline d'apprentissage automatique utilise Python avec scikit-learn, pandas et numpy.
+
+Le syst\`eme offre un support multilingue (anglais, fran\c{c}ais, arabe), une authentification s\'ecuris\'ee via Auth.js, des tableaux de bord interactifs et des visualisations en temps r\'eel.
+
+\textbf{Mots-cl\'es~:} Intelligence Artificielle, Risque de Cr\'edit, Apprentissage Automatique, D\'etection de Fraude, GRC, Entrep\^ot de Donn\'ees, Next.js, ClickHouse.
+
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+
+This thesis presents the design and implementation of \textbf{LendGuard AI}, an intelligent credit risk assessment platform powered by artificial intelligence. The system integrates advanced machine learning models -- including Logistic Regression, Random Forest, Gradient Boosting, and XGBoost -- for loan default prediction, coupled with a fraud detection module and a comprehensive Governance, Risk, and Compliance (GRC) framework.
+
+The technical architecture relies on a modern technology stack comprising Next.js~14, React~18, TypeScript, and Tailwind~CSS for the frontend, PostgreSQL with Prisma~ORM for the transactional layer, and ClickHouse for the analytical data warehouse following the Medallion architecture (Bronze/Silver/Gold).
+
+\textbf{Keywords:} Artificial Intelligence, Credit Risk, Machine Learning, Fraud Detection, GRC, Data Warehouse, Next.js, ClickHouse.
+
+% Tables des mati\`eres
+\tableofcontents
+\listoffigures
+\addcontentsline{toc}{chapter}{Liste des figures}
+\listoftables
+\addcontentsline{toc}{chapter}{Liste des tableaux}
+
+% Liste des abr\'eviations
+\chapter*{Liste des Abr\'eviations}
+\addcontentsline{toc}{chapter}{Liste des Abr\'eviations}
+
+\begin{tabular}{ll}
+\textbf{IA} & Intelligence Artificielle \\
+\textbf{ML} & Machine Learning (Apprentissage Automatique) \\
+\textbf{GRC} & Gouvernance, Risque et Conformit\'e \\
+\textbf{LSTM} & Long Short-Term Memory \\
+\textbf{t-SNE} & t-Distributed Stochastic Neighbor Embedding \\
+\textbf{ETL} & Extract, Transform, Load \\
+\textbf{OLTP} & Online Transactional Processing \\
+\textbf{OLAP} & Online Analytical Processing \\
+\textbf{API} & Application Programming Interface \\
+\textbf{ORM} & Object-Relational Mapping \\
+\textbf{XGBoost} & Extreme Gradient Boosting \\
+\textbf{ROC-AUC} & Receiver Operating Characteristic - Area Under Curve \\
+\textbf{DTI} & Debt-to-Income (Taux d'endettement) \\
+\textbf{GDPR} & General Data Protection Regulation \\
+\textbf{CSS} & Cascading Style Sheets \\
+\textbf{SQL} & Structured Query Language \\
+\textbf{KL} & Kullback-Leibler (Divergence) \\
+\end{tabular}
+
+% ============================================================
+% CONTENU PRINCIPAL
+% ============================================================
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+% ============================================================
+\chapter{Introduction G\'en\'erale}
+% ============================================================
+
+\section{Contexte et Probl\'ematique}
+
+Le secteur financier est confront\'e \`a des d\'efis majeurs en mati\`ere d'\'evaluation du risque de cr\'edit. Les m\'ethodes traditionnelles, bas\'ees sur des r\`egles statiques et des scores de cr\'edit classiques, s'av\`erent insuffisantes face \`a la complexit\'e croissante des profils d'emprunteurs et \`a l'\'evolution rapide des sch\'emas de fraude financi\`ere.
+
+Selon la Banque Mondiale, le taux de cr\'eances douteuses mondial a atteint 3,6\% en 2023, repr\'esentant des milliards de dollars de pertes pour les institutions financi\`eres. Parall\`element, la fraude dans le secteur du pr\^et conna\^it une augmentation de 15\% par an, n\'ecessitant des outils de d\'etection plus sophistiqu\'es.
+
+L'intelligence artificielle et l'apprentissage automatique offrent des solutions prometteuses pour am\'eliorer la pr\'ecision des \'evaluations de risque, automatiser la d\'etection de fraude et optimiser les processus de conformit\'e r\'eglementaire.
+
+\section{Objectifs du Projet}
+
+Ce projet vise \`a concevoir et r\'ealiser \textbf{LendGuard AI}, une plateforme int\'egr\'ee qui~:
+
+\begin{enumerate}[label=\arabic*)]
+  \item \textbf{Pr\'edit le d\'efaut de paiement} \`a l'aide de mod\`eles d'apprentissage automatique entra\^in\'es sur des donn\'ees r\'eelles (Lending Club);
+  \item \textbf{D\'etecte la fraude} gr\^ace \`a des algorithmes d'anomalie et des r\`egles d'association;
+  \item \textbf{G\`ere la conformit\'e} via un cadre GRC complet (gouvernance, risque, conformit\'e);
+  \item \textbf{Visualise les donn\'ees} \`a travers des tableaux de bord interactifs et des graphiques analytiques;
+  \item \textbf{Int\`egre un entrep\^ot de donn\'ees} analytique avec architecture m\'edaillon pour des performances optimales.
+\end{enumerate}
+
+\section{Organisation du M\'emoire}
+
+Ce m\'emoire est organis\'e comme suit~:
+
+\begin{itemize}
+  \item \textbf{Chapitre 1~:} Introduction g\'en\'erale pr\'esentant le contexte et les objectifs.
+  \item \textbf{Chapitre 2~:} \'Etat de l'art couvrant les fondements th\'eoriques.
+  \item \textbf{Chapitre 3~:} Analyse et sp\'ecification des besoins.
+  \item \textbf{Chapitre 4~:} Conception de la solution.
+  \item \textbf{Chapitre 5~:} R\'ealisation et impl\'ementation.
+  \item \textbf{Chapitre 6~:} Tests, r\'esultats et \'evaluation.
+  \item \textbf{Conclusion~:} Synth\`ese et perspectives.
+\end{itemize}
+
+% ============================================================
+\chapter{\'Etat de l'Art}
+% ============================================================
+
+\section{Le Risque de Cr\'edit~: D\'efinitions et Enjeux}
+
+Le risque de cr\'edit se d\'efinit comme la probabilit\'e qu'un emprunteur ne respecte pas ses obligations de remboursement. Il constitue l'un des risques les plus importants auxquels sont confront\'ees les institutions financi\`eres \cite{gelman2013}.
+
+\subsection{M\'ethodes Traditionnelles d'\'Evaluation}
+
+Les approches classiques incluent~:
+\begin{itemize}
+  \item Le \textbf{scoring de cr\'edit} (FICO, VantageScore) bas\'e sur l'historique de cr\'edit;
+  \item L'\textbf{analyse des ratios financiers} (DTI, LTV);
+  \item Les \textbf{mod\`eles experts} reposant sur le jugement humain.
+\end{itemize}
+
+Ces m\'ethodes pr\'esentent des limitations~: incapacit\'e \`a capturer les relations non-lin\'eaires, absence d'adaptation dynamique, et vuln\'erabilit\'e face aux nouveaux types de fraude.
+
+\section{Apprentissage Automatique pour le Risque de Cr\'edit}
+
+\subsection{R\'egression Logistique}
+
+La r\'egression logistique mod\'elise la probabilit\'e de d\'efaut comme~:
+\begin{equation}
+  P(Y=1|X) = \frac{1}{1 + e^{-(\beta_0 + \beta_1 x_1 + \cdots + \beta_n x_n)}}
+\end{equation}
+o\`u $X = (x_1, \ldots, x_n)$ repr\'esente les variables explicatives et $\beta_i$ les coefficients appris.
+
+\subsection{For\^ets Al\'eatoires (Random Forest)}
+
+L'algorithme Random Forest \cite{breiman2001} construit un ensemble de $B$ arbres de d\'ecision, chacun entra\^in\'e sur un sous-\'echantillon bootstrap des donn\'ees. La pr\'ediction finale est obtenue par vote majoritaire~:
+\begin{equation}
+  \hat{y} = \text{mode}\{h_b(x)\}_{b=1}^{B}
+\end{equation}
+
+\subsection{Gradient Boosting et XGBoost}
+
+Le Gradient Boosting construit s\'equentiellement des mod\`eles faibles en minimisant une fonction de perte \cite{chen2016xgboost}~:
+\begin{equation}
+  \mathcal{L}(\phi) = \sum_{i} l(\hat{y}_i, y_i) + \sum_{k} \Omega(f_k)
+\end{equation}
+o\`u $\Omega(f) = \gamma T + \frac{1}{2}\lambda \|w\|^2$ est le terme de r\'egularisation.
+
+\subsection{R\'eseaux LSTM pour les S\'eries Temporelles}
+
+Les r\'eseaux LSTM (Long Short-Term Memory) \cite{hochreiter1997} sont con\c{c}us pour capturer les d\'ependances temporelles \`a long terme. Les \'equations d'une cellule LSTM sont~:
+\begin{align}
+  f_t &= \sigma(W_f \cdot [h_{t-1}, x_t] + b_f) \quad &\text{(Porte d'oubli)} \\
+  i_t &= \sigma(W_i \cdot [h_{t-1}, x_t] + b_i) \quad &\text{(Porte d'entr\'ee)} \\
+  \tilde{C}_t &= \tanh(W_C \cdot [h_{t-1}, x_t] + b_C) \quad &\text{(Candidat)} \\
+  C_t &= f_t \odot C_{t-1} + i_t \odot \tilde{C}_t \quad &\text{(\'Etat cellulaire)} \\
+  o_t &= \sigma(W_o \cdot [h_{t-1}, x_t] + b_o) \quad &\text{(Porte de sortie)} \\
+  h_t &= o_t \odot \tanh(C_t) \quad &\text{(\'Etat cach\'e)}
+\end{align}
+
+\section{R\'eduction de Dimension~: t-SNE}
+
+L'algorithme t-SNE (t-Distributed Stochastic Neighbor Embedding) \cite{vandermaaten2008} projette des donn\'ees de haute dimension dans un espace de basse dimension en minimisant la divergence de Kullback-Leibler~:
+\begin{equation}
+  KL(P\|Q) = \sum_i \sum_j p_{ij} \log \frac{p_{ij}}{q_{ij}}
+\end{equation}
+
+Les affinit\'es en haute dimension utilisent un noyau gaussien~:
+\begin{equation}
+  p_{j|i} = \frac{\exp(-\|x_i - x_j\|^2 / 2\sigma_i^2)}{\sum_{k \neq i} \exp(-\|x_i - x_k\|^2 / 2\sigma_i^2)}
+\end{equation}
+
+En basse dimension, une distribution t de Student est employ\'ee~:
+\begin{equation}
+  q_{ij} = \frac{(1 + \|y_i - y_j\|^2)^{-1}}{\sum_{k \neq l} (1 + \|y_k - y_l\|^2)^{-1}}
+\end{equation}
+
+\section{Fouille de Donn\'ees~: Algorithme Apriori}
+
+L'algorithme Apriori \cite{agrawal1994} d\'ecouvre des r\`egles d'association dans les donn\'ees transactionnelles. Les m\'etriques cl\'es sont~:
+\begin{align}
+  \text{Support}(X) &= \frac{|\{t \in D \mid X \subseteq t\}|}{|D|} \\
+  \text{Confiance}(X \Rightarrow Y) &= \frac{\text{Support}(X \cup Y)}{\text{Support}(X)} \\
+  \text{Lift}(X \Rightarrow Y) &= \frac{\text{Support}(X \cup Y)}{\text{Support}(X) \cdot \text{Support}(Y)}
+\end{align}
+
+\section{Inf\'erence Bay\'esienne}
+
+L'inf\'erence bay\'esienne \cite{gelman2013} met \`a jour les croyances \`a partir de nouvelles observations~:
+\begin{equation}
+  P(\text{D\'efaut} \mid \text{\'Evidence}) = \frac{P(\text{\'Evidence} \mid \text{D\'efaut}) \times P(\text{D\'efaut})}{P(\text{\'Evidence})}
+\end{equation}
+
+\section{Entrep\^ot de Donn\'ees et Architecture M\'edaillon}
+
+L'architecture m\'edaillon (Bronze/Silver/Gold) organise les donn\'ees en couches de qualit\'e croissante \cite{abadi2008}. Les bases de donn\'ees orient\'ees colonnes (ClickHouse) offrent des performances sup\'erieures pour les requ\^etes analytiques, avec un facteur d'acc\'el\'eration typique de 200x par rapport aux syst\`emes orient\'es lignes.
+
+% ============================================================
+\chapter{Analyse et Sp\'ecification des Besoins}
+% ============================================================
+
+\section{\'Etude de l'Existant}
+
+Les solutions existantes d'\'evaluation du risque de cr\'edit pr\'esentent plusieurs limitations~:
+
+\begin{table}[H]
+\centering
+\caption{Comparaison des solutions existantes}
+\begin{tabularx}{\textwidth}{|l|X|X|}
+\hline
+\textbf{Solution} & \textbf{Avantages} & \textbf{Inconv\'enients} \\
+\hline
+FICO Score & Standard industriel, large adoption & Statique, pas d'IA \\
+\hline
+Zest AI & ML int\'egr\'e & Co\^ut \'elev\'e, propri\'etaire \\
+\hline
+Upstart & IA avanc\'ee & Limit\'e au march\'e US \\
+\hline
+\textbf{LendGuard AI} & \textbf{Open-source, multi-mod\`ele, GRC} & \textbf{Prototype acad\'emique} \\
+\hline
+\end{tabularx}
+\end{table}
+
+\section{Identification des Besoins}
+
+\subsection{Besoins Fonctionnels}
+
+\begin{enumerate}[label=\textbf{BF\arabic*}:]
+  \item Gestion des demandes de pr\^et (cr\'eation, suivi, d\'ecision);
+  \item Pr\'ediction du risque de d\'efaut via mod\`eles ML;
+  \item D\'etection automatique de fraude;
+  \item Tableau de bord analytique avec visualisations;
+  \item Gestion de la conformit\'e (GRC);
+  \item Support multilingue (EN, FR, AR);
+  \item Authentification et gestion des r\^oles;
+  \item G\'en\'eration de rapports et scoring.
+\end{enumerate}
+
+\subsection{Besoins Non-Fonctionnels}
+
+\begin{enumerate}[label=\textbf{BNF\arabic*}:]
+  \item \textbf{Performance~:} Temps de r\'eponse < 2s pour les pr\'edictions;
+  \item \textbf{S\'ecurit\'e~:} Chiffrement, pr\'evention injection SQL, XSS;
+  \item \textbf{Scalabilit\'e~:} Support de 100~000+ pr\^ets;
+  \item \textbf{Disponibilit\'e~:} Interface responsive (mobile/desktop);
+  \item \textbf{Maintenabilit\'e~:} Code modulaire, documentation compl\`ete.
+\end{enumerate}
+
+\section{Diagramme de Cas d'Utilisation}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+  actor/.style={circle, draw, minimum size=1cm, font=\small},
+  usecase/.style={ellipse, draw, minimum width=3.5cm, minimum height=1cm, text width=3cm, align=center, font=\small},
+  >=stealth
+]
+  \node[actor] (user) at (0,0) {Utilisateur};
+  \node[actor] (admin) at (0,-8) {Admin};
+
+  \node[usecase] (uc1) at (6,1) {Soumettre demande de pr\^et};
+  \node[usecase] (uc2) at (6,-0.5) {Consulter scoring};
+  \node[usecase] (uc3) at (6,-2) {Voir tableau de bord};
+  \node[usecase] (uc4) at (6,-3.5) {Authentification};
+  \node[usecase] (uc5) at (6,-5.5) {G\'erer politiques GRC};
+  \node[usecase] (uc6) at (6,-7) {Analyser fraudes};
+  \node[usecase] (uc7) at (6,-8.5) {G\'erer utilisateurs};
+
+  \draw[->] (user) -- (uc1);
+  \draw[->] (user) -- (uc2);
+  \draw[->] (user) -- (uc3);
+  \draw[->] (user) -- (uc4);
+  \draw[->] (admin) -- (uc5);
+  \draw[->] (admin) -- (uc6);
+  \draw[->] (admin) -- (uc7);
+  \draw[->] (admin) -- (uc4);
+\end{tikzpicture}
+\caption{Diagramme de cas d'utilisation principal}
+\end{figure}
+
+% ============================================================
+\chapter{Conception}
+% ============================================================
+
+\section{Architecture G\'en\'erale du Syst\`eme}
+
+LendGuard AI repose sur une architecture multi-couches combinant traitement transactionnel (OLTP) et analytique (OLAP)~:
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+  block/.style={rectangle, draw, rounded corners, minimum width=3cm, minimum height=1cm, fill=blue!10, font=\small, text width=3cm, align=center},
+  dbblock/.style={rectangle, draw, rounded corners, minimum width=2.5cm, minimum height=1cm, fill=orange!15, font=\small, text width=2.5cm, align=center},
+  myarrow/.style={->, thick, >=stealth}
+]
+  \node[block, fill=green!15] (ui) at (0,6) {Interface React / Next.js 14 / Tailwind CSS};
+  \node[block, fill=green!15] (auth) at (4.5,6) {Auth.js Authentification};
+  \node[block, fill=yellow!15] (api) at (2,4) {API Routes Next.js};
+  \node[block, fill=yellow!15] (ml) at (6.5,4) {Pipeline ML Python};
+  \node[dbblock] (pg) at (0,2) {PostgreSQL Prisma};
+  \node[dbblock] (ch) at (4.5,2) {ClickHouse Warehouse};
+  \node[block, fill=orange!30] (bronze) at (0,0) {Bronze -- Donn\'ees brutes};
+  \node[block, fill=gray!30] (silver) at (3.5,0) {Silver -- Donn\'ees nettoy\'ees};
+  \node[block, fill=yellow!40] (gold) at (7,0) {Gold -- Agr\'egats m\'etier};
+
+  \draw[myarrow] (ui) -- (api);
+  \draw[myarrow] (auth) -- (api);
+  \draw[myarrow] (api) -- (pg);
+  \draw[myarrow] (api) -- (ml);
+  \draw[myarrow] (pg) -- node[right, font=\tiny]{ETL} (bronze);
+  \draw[myarrow] (bronze) -- (silver);
+  \draw[myarrow] (silver) -- (gold);
+  \draw[myarrow] (ml) -- (ch);
+  \draw[myarrow] (gold.north) -- (api);
+\end{tikzpicture}
+\caption{Architecture g\'en\'erale de LendGuard AI}
+\end{figure}
+
+\section{Mod\`ele de Donn\'ees}
+
+\subsection{Sch\'ema de la Base de Donn\'ees Transactionnelle}
+
+Le sch\'ema PostgreSQL comprend les entit\'es principales suivantes~:
+
+\begin{table}[H]
+\centering
+\caption{Entit\'es principales du mod\`ele de donn\'ees}
+\begin{tabular}{|l|l|p{6cm}|}
+\hline
+\textbf{Entit\'e} & \textbf{Cl\'e Primaire} & \textbf{Description} \\
+\hline
+User & id (CUID) & Utilisateur du syst\`eme avec r\^ole (USER/ADMIN) \\
+\hline
+Loan & id (CUID) & Demande de pr\^et avec informations personnelles, d\'etails du pr\^et, facteurs de risque et pr\'edictions ML \\
+\hline
+Policy & id (CUID) & Politique de gouvernance (GRC) \\
+\hline
+Risk & id (CUID) & Registre des risques avec cat\'egories et niveaux \\
+\hline
+ComplianceFramework & id (CUID) & Cadre de conformit\'e (GDPR, SOC2, ISO27001) \\
+\hline
+AuditLog & id (CUID) & Journal d'audit des actions \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Sch\'ema de l'Entrep\^ot de Donn\'ees}
+
+L'entrep\^ot ClickHouse suit l'architecture m\'edaillon~:
+
+\begin{itemize}
+  \item \textbf{Bronze (3 tables)~:} \texttt{raw\_loan\_applications}, \texttt{raw\_fraud\_transactions}, \texttt{raw\_economic\_indicators} -- TTL de 90 jours;
+  \item \textbf{Silver (3 tables)~:} \texttt{clean\_loan\_applications} avec feature engineering, \texttt{fraud\_patterns}, \texttt{economic\_context};
+  \item \textbf{Gold (3 tables)~:} \texttt{portfolio\_risk\_monthly}, \texttt{user\_risk\_clusters} (t-SNE 3D), \texttt{fraud\_networks}.
+\end{itemize}
+
+\section{Conception du Pipeline ML}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+  stepbox/.style={rectangle, draw, rounded corners, minimum width=2.5cm, minimum height=0.8cm, fill=blue!10, font=\small},
+  arrow/.style={->, thick, >=stealth}
+]
+  \node[stepbox] (data) at (0,0) {Donn\'ees brutes};
+  \node[stepbox] (prep) at (3.5,0) {Pr\'etraitement};
+  \node[stepbox] (feat) at (7,0) {Feature Engineering};
+  \node[stepbox] (train) at (10.5,0) {Entra\^inement};
+  \node[stepbox, fill=green!15] (eval) at (7,-1.5) {\'Evaluation};
+  \node[stepbox, fill=yellow!15] (deploy) at (10.5,-1.5) {D\'eploiement};
+
+  \draw[arrow] (data) -- (prep);
+  \draw[arrow] (prep) -- (feat);
+  \draw[arrow] (feat) -- (train);
+  \draw[arrow] (train) -- (eval);
+  \draw[arrow] (eval) -- (deploy);
+\end{tikzpicture}
+\caption{Pipeline d'apprentissage automatique}
+\end{figure}
+
+Les variables d'entr\'ee du mod\`ele incluent~:
+\begin{itemize}
+  \item \textbf{D\'emographiques~:} \^age, \'education, statut matrimonial;
+  \item \textbf{Financi\`eres~:} revenu, montant du pr\^et, score de cr\'edit, DTI;
+  \item \textbf{Emploi~:} type d'emploi, mois d'anciennet\'e;
+  \item \textbf{D\'eriv\'ees~:} ratio revenu/pr\^et, stabilit\'e d'emploi.
+\end{itemize}
+
+% ============================================================
+\chapter{R\'ealisation et Impl\'ementation}
+% ============================================================
+
+\section{Environnement de D\'eveloppement}
+
+\begin{table}[H]
+\centering
+\caption{Technologies utilis\'ees}
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Composant} & \textbf{Technologie} & \textbf{Version} \\
+\hline
+Frontend & Next.js / React / TypeScript & 16.0.10 / 19.2 \\
+\hline
+Styling & Tailwind CSS & 4.1.9 \\
+\hline
+Composants UI & shadcn/ui (Radix UI) & -- \\
+\hline
+Base de donn\'ees & PostgreSQL (Prisma ORM) & 7.2 \\
+\hline
+Entrep\^ot & ClickHouse & Derni\`ere \\
+\hline
+ML / IA & Python, scikit-learn, XGBoost & 3.9+ \\
+\hline
+Authentification & Auth.js (NextAuth v5) & 5.0 \\
+\hline
+Graphiques & Recharts & 2.15.4 \\
+\hline
+i18n & next-intl & 4.7 \\
+\hline
+\end{tabular}
+\end{table}
+
+\section{Impl\'ementation du Frontend}
+
+L'interface utilisateur est construite avec Next.js~14 en utilisant l'App Router et les Server Components. La structure des pages du tableau de bord comprend~:
+
+\begin{itemize}
+  \item \textbf{Dashboard principal~:} Vue d'ensemble avec KPI et graphiques;
+  \item \textbf{Pr\^ets (/loans)~:} Gestion et suivi des demandes;
+  \item \textbf{Pr\'ediction (/predict)~:} Formulaire de pr\'ediction du d\'efaut;
+  \item \textbf{D\'etection (/detect)~:} Module de d\'etection de fraude;
+  \item \textbf{Analytique (/analytics)~:} Visualisations avanc\'ees;
+  \item \textbf{Score (/score)~:} \'Evaluation du risque;
+  \item \textbf{GRC~:} Gouvernance, Registre des risques, Conformit\'e.
+\end{itemize}
+
+\section{Impl\'ementation des Mod\`eles ML}
+
+Quatre mod\`eles ont \'et\'e entra\^in\'es et d\'eploy\'es~:
+
+\begin{lstlisting}[language=Python, caption={Entra\^inement des mod\`eles de pr\'ediction}]
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import GradientBoostingClassifier
+from xgboost import XGBClassifier
+
+# Entrainement des 4 modeles
+models = {
+    'logistic_regression': LogisticRegression(),
+    'random_forest': RandomForestClassifier(n_estimators=100),
+    'gradient_boosting': GradientBoostingClassifier(),
+    'xgboost': XGBClassifier()
+}
+
+for name, model in models.items():
+    model.fit(X_train, y_train)
+    joblib.dump(model, f'models/{name}.pkl')
+\end{lstlisting}
+
+\section{Impl\'ementation de l'Entrep\^ot de Donn\'ees}
+
+Le pipeline ETL extrait les donn\'ees de PostgreSQL, les transforme avec feature engineering (13 $\rightarrow$ 100+ caract\'eristiques), et les charge dans ClickHouse. La r\'eduction de dimension t-SNE est appliqu\'ee pour projeter les donn\'ees de 100D vers 3D.
+
+\section{Impl\'ementation du Module GRC}
+
+Le cadre GRC comprend~:
+\begin{itemize}
+  \item \textbf{Gouvernance~:} Gestion des politiques (DRAFT $\rightarrow$ ACTIVE $\rightarrow$ ARCHIVED);
+  \item \textbf{Risque~:} Registre avec 6 cat\'egories (Mod\`ele, Conformit\'e, Fraude, Op\'erationnel, Biais, Cybers\'ecurit\'e);
+  \item \textbf{Conformit\'e~:} Suivi GDPR, SOC2, ISO27001, PCI-DSS.
+\end{itemize}
+
+\section{Authentification et S\'ecurit\'e}
+
+L'authentification est g\'er\'ee par Auth.js~v5 avec~:
+\begin{itemize}
+  \item Hachage des mots de passe via bcrypt;
+  \item Gestion des sessions s\'ecuris\'ees;
+  \item Protection CSRF et XSS;
+  \item Pr\'evention des injections SQL via Prisma~ORM.
+\end{itemize}
+
+% ============================================================
+\chapter{Tests, R\'esultats et \'Evaluation}
+% ============================================================
+
+\section{R\'esultats des Mod\`eles de Pr\'ediction}
+
+\begin{table}[H]
+\centering
+\caption{Performance des mod\`eles de pr\'ediction du d\'efaut}
+\begin{tabular}{|l|c|c|c|c|c|}
+\hline
+\textbf{Mod\`ele} & \textbf{Accuracy} & \textbf{Pr\'ecision} & \textbf{Rappel} & \textbf{F1-Score} & \textbf{ROC-AUC} \\
+\hline
+R\'egression Logistique & 0.885 & 0.617 & 0.033 & 0.062 & 0.750 \\
+\hline
+For\^et Al\'eatoire & 0.886 & 0.637 & 0.040 & 0.075 & 0.745 \\
+\hline
+Gradient Boosting & 0.886 & 0.615 & 0.050 & 0.093 & 0.756 \\
+\hline
+\textbf{XGBoost} & \textbf{0.886} & \textbf{0.573} & \textbf{0.072} & \textbf{0.128} & \textbf{0.752} \\
+\hline
+\end{tabular}
+\end{table}
+
+\textbf{Analyse des r\'esultats~:}
+\begin{itemize}
+  \item Les quatre mod\`eles atteignent une exactitude sup\'erieure \`a 88\%;
+  \item Le Gradient Boosting obtient le meilleur ROC-AUC (0.756);
+  \item XGBoost offre le meilleur \'equilibre F1-Score (0.128);
+  \item Le faible rappel indique un d\'es\'equilibre de classes n\'ecessitant des techniques de suréchantillonnage (SMOTE).
+\end{itemize}
+
+\section{Performance de l'Entrep\^ot de Donn\'ees}
+
+\begin{table}[H]
+\centering
+\caption{Comparaison de performance OLTP vs OLAP}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Requ\^ete} & \textbf{PostgreSQL} & \textbf{ClickHouse} & \textbf{Acc\'el\'eration} \\
+\hline
+Moyenne montant pr\^et & 2~000 ms & 10 ms & 200x \\
+\hline
+Agr\'egation mensuelle & 5~000 ms & 5 ms & 1~000x \\
+\hline
+Pipeline ETL (1000 pr\^ets) & -- & 51 s & -- \\
+\hline
+t-SNE (1000 utilisateurs) & -- & 45 s & -- \\
+\hline
+\end{tabular}
+\end{table}
+
+\section{Analyse de Complexit\'e}
+
+\begin{table}[H]
+\centering
+\caption{Complexit\'e algorithmique des composants}
+\begin{tabular}{|l|c|c|}
+\hline
+\textbf{Algorithme} & \textbf{Temps} & \textbf{Espace} \\
+\hline
+t-SNE (Barnes-Hut) & $O(n \log n)$ & $O(n)$ \\
+\hline
+Apriori & $O(k \cdot |D| \cdot |L_k|)$ & $O(|L_k|)$ \\
+\hline
+LSTM (inf\'erence) & $O(T \cdot d \cdot h^2)$ & $O(h^2)$ \\
+\hline
+Mise \`a jour Bay\'esienne & $O(1)$ & $O(1)$ \\
+\hline
+For\^et Al\'eatoire & $O(B \cdot n \log n)$ & $O(B \cdot n)$ \\
+\hline
+\end{tabular}
+\end{table}
+
+\section{Int\'egration Acad\'emique}
+
+\begin{table}[H]
+\centering
+\caption{Matrice d'int\'egration cours/impl\'ementation}
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Cours} & \textbf{Concept} & \textbf{Impl\'ementation} \\
+\hline
+Entrep\^ot de donn\'ees & Architecture m\'edaillon & Bronze/Silver/Gold ClickHouse \\
+\hline
+R\'eduction de dimension & t-SNE & Projection 100D $\rightarrow$ 3D \\
+\hline
+R\'eseaux de neurones & LSTM & Pr\'ediction temporelle \\
+\hline
+Inf\'erence math. & Bay\'esien & Mise \`a jour de probabilit\'e \\
+\hline
+Fouille de donn\'ees & Apriori & Patterns de fraude \\
+\hline
+Visualisation & Graphes 3D & Three.js / Recharts \\
+\hline
+\end{tabular}
+\end{table}
+
+% ============================================================
+\chapter*{Conclusion G\'en\'erale et Perspectives}
+\addcontentsline{toc}{chapter}{Conclusion G\'en\'erale et Perspectives}
+% ============================================================
+
+\section*{Synth\`ese}
+
+Ce m\'emoire a pr\'esent\'e la conception et la r\'ealisation de LendGuard AI, une plateforme compl\`ete d'\'evaluation du risque de cr\'edit par intelligence artificielle. Les contributions principales de ce travail sont~:
+
+\begin{enumerate}
+  \item L'int\'egration de quatre mod\`eles de Machine Learning (R\'egression Logistique, For\^et Al\'eatoire, Gradient Boosting, XGBoost) avec une exactitude sup\'erieure \`a 88\%;
+  \item La mise en place d'un entrep\^ot de donn\'ees analytique (ClickHouse) avec architecture m\'edaillon, offrant une acc\'el\'eration de 200x;
+  \item L'impl\'ementation d'un cadre GRC complet pour la gouvernance et la conformit\'e;
+  \item Le d\'eveloppement d'une interface web moderne, responsive et multilingue.
+\end{enumerate}
+
+\section*{Perspectives}
+
+Plusieurs am\'eliorations sont envisag\'ees~:
+
+\begin{itemize}
+  \item \textbf{\'Equit\'e algorithmique~:} Impl\'ementer des contraintes d'\'equit\'e et des analyses de biais (SHAP values);
+  \item \textbf{LSTM en production~:} D\'eployer les r\'eseaux LSTM pour la pr\'ediction temporelle en temps r\'eel;
+  \item \textbf{Visualisation 3D~:} Int\'egrer Three.js pour la topographie de risque interactive;
+  \item \textbf{F\'ed\'eration de donn\'ees~:} Permettre l'apprentissage f\'ed\'er\'e prot\'egeant la vie priv\'ee;
+  \item \textbf{Scalabilit\'e~:} Tests de charge \`a 1~000~000+ pr\^ets avec optimisation Barnes-Hut.
+\end{itemize}
+
+% ============================================================
+% BIBLIOGRAPHIE
+% ============================================================
+\begin{thebibliography}{99}
+
+\bibitem{vandermaaten2008}
+Van der Maaten, L. \& Hinton, G. (2008). \textit{Visualizing data using t-SNE}. Journal of Machine Learning Research, 9(11), 2579--2605.
+
+\bibitem{agrawal1994}
+Agrawal, R. \& Srikant, R. (1994). \textit{Fast algorithms for mining association rules}. Proc. 20th Int. Conf. Very Large Data Bases (VLDB), Vol. 1215, pp. 487--499.
+
+\bibitem{hochreiter1997}
+Hochreiter, S. \& Schmidhuber, J. (1997). \textit{Long short-term memory}. Neural Computation, 9(8), 1735--1780.
+
+\bibitem{gelman2013}
+Gelman, A., Carlin, J.B., Stern, H.S., Dunson, D.B., Vehtari, A. \& Rubin, D.B. (2013). \textit{Bayesian Data Analysis}. 3rd ed. CRC Press.
+
+\bibitem{abadi2008}
+Abadi, D., Madden, S. \& Hachem, N. (2008). \textit{Column-stores vs. row-stores: How different are they really?}. Proc. ACM SIGMOD International Conference on Management of Data.
+
+\bibitem{chen2016xgboost}
+Chen, T. \& Guestrin, C. (2016). \textit{XGBoost: A Scalable Tree Boosting System}. Proc. 22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining, pp. 785--794.
+
+\bibitem{breiman2001}
+Breiman, L. (2001). \textit{Random Forests}. Machine Learning, 45(1), 5--32.
+
+\bibitem{hastie2009}
+Hastie, T., Tibshirani, R. \& Friedman, J. (2009). \textit{The Elements of Statistical Learning}. 2nd ed. Springer.
+
+\bibitem{goodfellow2016}
+Goodfellow, I., Bengio, Y. \& Courville, A. (2016). \textit{Deep Learning}. MIT Press.
+
+\bibitem{bishop2006}
+Bishop, C.M. (2006). \textit{Pattern Recognition and Machine Learning}. Springer.
+
+\bibitem{nextjs2024}
+Vercel. (2024). \textit{Next.js Documentation}. \url{https://nextjs.org/docs}.
+
+\bibitem{prisma2024}
+Prisma. (2024). \textit{Prisma ORM Documentation}. \url{https://www.prisma.io/docs}.
+
+\bibitem{clickhouse2024}
+ClickHouse Inc. (2024). \textit{ClickHouse Documentation}. \url{https://clickhouse.com/docs}.
+
+\bibitem{sklearn2024}
+Pedregosa, F. et al. (2011). \textit{Scikit-learn: Machine Learning in Python}. Journal of Machine Learning Research, 12, 2825--2830.
+
+\bibitem{lendingclub}
+Lending Club. (2024). \textit{Lending Club Loan Data}. \url{https://www.lendingclub.com/}.
+
+\end{thebibliography}
+
+% ============================================================
+% ANNEXES
+% ============================================================
+\appendix
+\chapter{Captures d'\'Ecran de l'Application}
+\textit{Les captures d'\'ecran de l'interface utilisateur, du tableau de bord, des pages de pr\'ediction et de d\'etection de fraude seront ajout\'ees ici.}
+
+\chapter{Code Source -- Extraits Cl\'es}
+
+\section{Sch\'ema Prisma (Extrait)}
+\begin{lstlisting}[language=SQL, caption={Mod\`ele Loan -- Prisma Schema}]
+model Loan {
+  id                  String   @id @default(cuid())
+  userId              String
+  applicantName       String
+  age                 Int
+  income              Float
+  creditScore         Int
+  dtiRatio            Float
+  loanAmount          Float
+  loanTerm            Int
+  interestRate        Float
+  riskScore           Float?
+  fraudProbability    Float?
+  defaultProbability  Float?
+  decision            Decision?
+  status              LoanStatus @default(PENDING)
+}
+\end{lstlisting}
+
+\section{Architecture de l'Entrep\^ot de Donn\'ees}
+\textit{Voir le fichier \texttt{warehouse/schema/dw\_schema.sql} pour le sch\'ema complet ClickHouse et \texttt{warehouse/etl/pipeline.py} pour le pipeline ETL.}
+
+\end{document}
