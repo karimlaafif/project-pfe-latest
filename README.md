@@ -1,6 +1,26 @@
-# LendGuard AI - Intelligent Loan Risk Assessment Platform
+<div align="center">
 
+# 🛡️ LendGuard 
+
+### AI-Powered Loan Intelligence Platform
+
+**Stop Fraud. Approve More Loans. In Real-Time.**
 A comprehensive AI-powered platform for loan default prediction, fraud detection, and Governance, Risk & Compliance (GRC) management.
+
+[![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-336791?style=for-the-badge&logo=postgresql)](https://www.postgresql.org/)
+[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
+
+[🚀 Live Demo]([https://lendguard.vercel.app](https://drive.google.com/file/d/1vY34zuu-Ep2CefC7bLwwLehWubuA1Z0O/view?usp=sharing)) • [📖 Documentation](https://docs.lendguard.ai) • [🎥 Video Tour]([https://youtube.com](https://drive.google.com/file/d/1vY34zuu-Ep2CefC7bLwwLehWubuA1Z0O/view?usp=sharing)) • [💬 Community](https://discord.gg/techevolab)
+
+![LendGuard AI Dashboard](https://via.placeholder.com/1200x600/0EA5E9/ffffff?text=LendGuard+AI+Dashboard)
+
+</div>
+
+---
+
+
 
 ## 🌟 Features
 
@@ -195,8 +215,39 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 📞 Support
 
-For support, email support@lendguard.ai or open an issue on GitHub.
+For support, email techevo.63@gmail.com or open an issue on GitHub.
+
+
+## 📊 Stats
+
+<div align="center">
+
+![GitHub stars](https://img.shields.io/github/stars/karimlaafif/lendguard-ai?style=social)
+![GitHub forks](https://img.shields.io/github/forks/karimlaafif/lendguard-ai?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/karimlaafif/lendguard-ai?style=social)
+![GitHub contributors](https://img.shields.io/github/contributors/karimlaafif/lendguard-ai)
+
+![GitHub issues](https://img.shields.io/github/issues/karimlaafif/lendguard-ai)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/karimlaafif/lendguard-ai)
+![GitHub last commit](https://img.shields.io/github/last-commit/karimlaafif/lendguard-ai)
+![GitHub code size](https://img.shields.io/github/languages/code-size/karimlaafif/lendguard-ai)
+
+</div>
 
 ---
 
-**Built with ❤️ for smarter lending decisions**
+## 🌟 Star History
+
+<div align="center">
+
+[![Star History Chart](https://api.star-history.com/svg?repos=karimlaafif/lendguard-ai&type=Date)](https://star-history.com/#karimlaafif/lendguard-ai&Date)
+
+</div>
+
+---
+
+<div align="center">
+
+### Made with ❤️ by the LendGuard Team
+
+**[Website](https://lendguard.ai)** • **[Documentation](https://docs.lendguard.ai)** • **[API](https://api.lendguard.ai)** • **[Blog](https://blog.lendguard.ai)**
